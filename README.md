@@ -57,7 +57,7 @@
     <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.2</version>
+            <version>2.13.2.1</version>
     </dependency>
     ```
   - junit dependency:
@@ -65,7 +65,7 @@
     <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>RELEASE</version>
+            <version>4.13.1</version>
             <scope>test</scope>
     </dependency>
     ```
