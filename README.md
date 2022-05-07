@@ -13,7 +13,7 @@
   - query on the resident set of topologies.
   - get the devices in a specific topology.
   - get the devices which are in a specific topology and connected to a specific netlistNode.
-+ `Hint`: A topology is a set of electronic components that are connected together.
++ `Hint` A topology is a set of electronic components that are connected together.
 + Example JSON file (topology.json):
 ```ruby
 {
@@ -76,13 +76,24 @@
 In addition to, it supports a package called `Jackson` which has a great methods and classes to deal with JSON files
 + Assume that the netlist for nmos type must have drain, gate and source.
 + Assume thar the netlist for resistor type must have t1 and t2.
++ Let all devices implement `Device` interface to keep the consistency of the devices and make it flexible for any future additions
++ Change the data structure of the JSON Object from `HashMap` to `LinkedHashMap` to preserve the order of the entries in the output JSON file
 ---
 ## Main Modules
-1. Topology.
-2. Device.
-3. Resistor.
-4. Nmos.
-5. Specifications.
++ Topology:
+  - id.
+  - components (Devices).
++ Device:
+  - type.
+  - id.
+  - specifications (resistance or m(l)).
+  - netlist.
++ Resistor implements Device.
++ Nmos implements Device.
++ Specifications:
+  - default.
+  - min.
+  - max.
 ---
 ## Test
 + Was done using `Junit` package in java.
