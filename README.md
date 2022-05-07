@@ -4,6 +4,7 @@
 - [Setup](#Setup)
 - [Design Decisions](#Design-Decisions)
 - [Main Modules](#Main-Modules)
+- [UML Class Diagram](#UML-Class-Diagram)
 - [Test](#Test)
 ---
 ## Overview
@@ -83,7 +84,7 @@
 + Choose java for this task as it provides an excellent environment for applying OOP concepts on it. 
 In addition to, it supports a package called `Jackson` which has a great methods and classes to deal with JSON files
 + Assume that the netlist for nmos type must have drain, gate and source.
-+ Assume thar the netlist for resistor type must have t1 and t2.
++ Assume that the netlist for resistor type must have t1 and t2.
 + Let all devices implement `Device` interface to keep the consistency of the devices and make it flexible for any future additions
 + Change the data structure of the JSON Object from `HashMap` to `LinkedHashMap` to preserve the order of the entries in the output JSON file
 ---
@@ -102,6 +103,10 @@ In addition to, it supports a package called `Jackson` which has a great methods
   - default.
   - min.
   - max.
+---
+## UML Class Diagram
+![image](https://raw.githubusercontent.com/Deffo0/Topology-API/main/UML%20Diagram.jpg)
+
 ---
 ## Test
 + Was done using `Junit` package in java.
