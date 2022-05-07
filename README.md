@@ -60,6 +60,14 @@
             <version>2.13.2.1</version>
     </dependency>
     ```
+  - org.json dependency:
+    ```ruby
+    <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20140107</version>
+    </dependency>
+    ```  
   - junit dependency:
     ```ruby
     <dependency>
