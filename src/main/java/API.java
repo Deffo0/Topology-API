@@ -1,8 +1,14 @@
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.FileWriter;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class API {
@@ -81,10 +87,66 @@ public class API {
      * @return 1 or 0 according to the success of the function without errors
      */
     public int writeJSON(String topologyID){
-        ObjectMapper objectMapper = new ObjectMapper();
+
+        // get the desired topology
         Topology topology = this.topologies.get(topologyID);
+
+        // JSON Object for the whole topology
+        JSONObject jsonObject = new JSONObject();
+        orderJSONObject(jsonObject);
+
+        // get the id field of the topology
+        jsonObject.put("id", topology.getId());
+
+        // each topology has its own devices JSON Array
+        JSONArray components = new JSONArray();
+
+        // for each device, make a json object contains all its data
+        for (Device device: topology.getComponents()) {
+            JSONObject jsonDevice = new JSONObject();
+            orderJSONObject(jsonDevice);
+
+            jsonDevice.put("type", device.getType());
+            jsonDevice.put("id", device.getId());
+
+            // each device has its own specifications
+            JSONObject specifications = new JSONObject();
+            orderJSONObject(specifications);
+
+            specifications.put("default", device.getSpecifications().getDefault());
+            specifications.put("min", device.getSpecifications().getMin());
+            specifications.put("max", device.getSpecifications().getMax());
+
+            // resistor and nmos have their own name for specifications
+            // based on the device type, the netlist differs from one to another
+            if(device.getType().equals("resistor")){
+                jsonDevice.put("resistance",specifications);
+
+                JSONObject netList = new JSONObject();
+                orderJSONObject(netList);
+                netList.put("t1", device.getNetList().get("t1"));
+                netList.put("t2", device.getNetList().get("t2"));
+                jsonDevice.put("netlist", netList);
+            }else if(device.getType().equals("nmos")){
+                jsonDevice.put("m(l)", specifications);
+
+                JSONObject netList = new JSONObject();
+                orderJSONObject(netList);
+                netList.put("drain", device.getNetList().get("drain"));
+                netList.put("gate", device.getNetList().get("gate"));
+                netList.put("source", device.getNetList().get("source"));
+                jsonDevice.put("netlist", netList);
+            }
+            components.put(jsonDevice);
+        }
+
+        jsonObject.put("components", components);
         try {
-            objectMapper.writeValue(new File("src\\main\\resources\\" + topologyID + ".json"), topology);
+
+            FileWriter writer = new FileWriter("src\\main\\resources\\" + topologyID + ".json");
+            jsonObject.write(writer);
+            writer.close();
+
         }catch (Exception e){
             System.out.println(e.getMessage());
             return 0;
@@ -134,6 +196,21 @@ public class API {
             }
         }
         return result;
+    }
+
+    /***
+     * @function change the JSONObject data structure from HashMap to LinkedHashMap to keep the entries in ordered way
+     * @param jsonObject
+     */
+    public void orderJSONObject(JSONObject jsonObject){
+        try {
+            Field map = jsonObject.getClass().getDeclaredField("map");
+            map.setAccessible(true);
+            map.set(jsonObject, new LinkedHashMap<>());
+            map.setAccessible(false);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }
