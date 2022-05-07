@@ -4,6 +4,7 @@
 - [Setup](#Setup)
 - [Design Decisions](#Design-Decisions)
 - [Main Modules](#Main-Modules)
+- [UML Class Diagram](#UML-Class-Diagram)
 - [Test](#Test)
 ---
 ## Overview
@@ -94,6 +95,10 @@ In addition to, it supports a package called `Jackson` which has a great methods
   - default.
   - min.
   - max.
+---
+## UML Class Diagram
+![image](https://raw.githubusercontent.com/Deffo0/Topology-API/main/UML%20Diagram.jpg)
+
 ---
 ## Test
 + Was done using `Junit` package in java.
